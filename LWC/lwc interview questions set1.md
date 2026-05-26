@@ -153,4 +153,4 @@ SOLN : It will crash the browser or cause infinite loops . Updating a reactive p
 
 ### Q> How would you show/hide a form section based on a picklist field value in LWC?
 
-SOLN :
+SOLN :[Other Repo Folder](./lwc%20code%20samples/scenerio-show%20form%20section%20based%20on%20picklist/picklistselection.js)
