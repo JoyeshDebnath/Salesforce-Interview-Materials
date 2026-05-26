@@ -1,5 +1,5 @@
 import {LightningElement,wire} from 'lwc';
-import {MessageContext,subscribe,APPLICATION_SCOPE } from 'lightning/messageService';
+import {MessageContext,subscribe,unsubscribe,APPLICATION_SCOPE } from 'lightning/messageService';
 import RECORD_SELECT_CHANNEL from '@salesforce/messageChannel/RecordSelectChannel__c';
 
 export default class SubscriberCMP extends LightningElement{
@@ -26,5 +26,9 @@ export default class SubscriberCMP extends LightningElement{
 
     handleMessage(message){
         this.recieveMessage=`Recived ID : ${message.recordId} -- Context : ${message.messageContext}   `;
+    }
+    disconnectedCallback(){
+        this.unsubscribe(this.subscription);
+        this.subscription=null;
     }
 }
