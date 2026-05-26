@@ -150,3 +150,7 @@ SOLN : It will crash the browser or cause infinite loops . Updating a reactive p
 
 **FIX**
 : use a boolean Flag ( eg : isRendered = False ) to ensure that the code inside only runs once .
+
+### Q> How would you show/hide a form section based on a picklist field value in LWC?
+
+SOLN :

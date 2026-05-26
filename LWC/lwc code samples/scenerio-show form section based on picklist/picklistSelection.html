@@ -1,0 +1,28 @@
+<template>
+    <lightning-card title="Form" icon-name="standard:account">
+        <div class="slds-var-m-around_medium">
+            <lightning-combobox
+                name="customerType"
+                label="Customer Type"
+                value={selectedType}
+                options={typeOptions}
+                onchange={handleTypeChange}
+            ></lightning-combobox>
+
+            <template lwc:if={isEnterpriseSelected}>
+                <div class="slds-box slds-theme_shade slds-var-m-top_medium">
+                    <h3 class="slds-text-heading_small slds-var-m-bottom_small">Enterprise Specific details</h3>
+                    <lightning-input
+                        type="number"
+                        label="Annual Revenue"
+                        value={enterpriseRevenue}
+                        onchange={handleRevenueChange}
+                    ></lightning-input>
+
+                    <lightning-input type="number" label="Contract Term (Months)" value={contractTerm}
+                        onchange={handleContractTermChange}></lightning-input>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

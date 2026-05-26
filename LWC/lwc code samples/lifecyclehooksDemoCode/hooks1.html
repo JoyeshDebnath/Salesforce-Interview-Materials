@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Lifecycle hooks Demo " icon-name="standard:account">
+        <div class="slds-var-m-around_medium dynamic-container">
+            <template if:true={acciuntData}>
+                <p><strong>Account name : </strong> {accountData.Name}</p>
+                <p><strong>Account Industry : </strong>{accountData.Industry}</p>
+            </template>
+            <template if:false={accountData}>
+                <p>Loading Account details ......</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>
