@@ -168,5 +168,5 @@ LMS is built on top of PUB/SUB patten . Its like a radio station .
 - It consisits of a Metadata file (Message Channel) , Publisher component (Sender) and Subscriber Component (Reciever )
   CODE Sample :
   [message channel demo](./lwc%20code%20samples/lms%20demo/RecordSelectChannel.messageChannel-meta.xml)
-  [Publisher Component](./lwc%20code%20samples/lms%20demo/PublisherCmp)
+  [Publisher Component](./lwc%20code%20samples/lms%20demo/PublisherCmp.js)
   [Subscriber Component](./lwc%20code%20samples/lms%20demo/SubscriberCmp.js)
