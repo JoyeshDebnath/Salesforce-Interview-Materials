@@ -125,3 +125,28 @@ export default class ImperativeCallsExample extends LightningElement {
   }
 }
 ```
+
+### Q> Explain LWC lifecycle hooks and when to use `renderedCallback()` vs `connectedCallback()`.
+
+SOLN : A lifecycle hook is simply a frmework defined methods that automatically fires at specific phases of a components existance .
+
+- Constructor () : component is created . memory allocated Still not inserted in DOM yet . Parne t fires before Child component .
+- connectedCallback() : component is inserted into the Browsers DOM . Parent fires before Child component .
+- renderedCallback () : The component has finished painitng its html on screen . Child fires before parent .
+- disconnectedCallback () : the component is removed from DOM and destroyed .
+- errorCallback (error , stack ) : Catches childs errors thrown .
+
+_ConnectedCalback() VS renderdCallback () hooks_  
+ |Feature | ConnectedCallback() | RenderdCallback () |
+|-------------------|-----------------|-------|
+When To USE | Once Component is inserted into the Browsers DOM |Multiple times , wvery time the component finishes rendering or re-rendering .
+IS DOM accessible ? | No , The HTML elemnts are not yet painted on the screen . | Yes DOM is ccessible
+Can you access @api properties | Yes public properties passed from Parent are fully accessible in connectedcallback | Yes accessible in renderdcallback
+Primary USE CASES : | Fetching data from APex , subscribing to lms, setting up default values to variables | Initlising 3rd party js libraries like Chart.js , manipulating DOM elemnts directly
+
+### Q> What if I update the Recative properties @track variables in renderdCallback hook ?
+
+SOLN : It will crash the browser or cause infinite loops . Updating a reactive property triggers component Re-rendering . because the component is re-renderd so it will triggered renderedCallback hook , this updates the property again the the cycle goes on crashing the browser .
+
+**FIX**
+: use a boolean Flag ( eg : isRendered = False ) to ensure that the code inside only runs once .
