@@ -155,3 +155,18 @@ SOLN : It will crash the browser or cause infinite loops . Updating a reactive p
 
 SOLN :[JS code ](./lwc%20code%20samples/scenerio-show%20form%20section%20based%20on%20picklist/picklistselection.js)
 [template code ](./lwc%20code%20samples/scenerio-show%20form%20section%20based%20on%20picklist/picklistselection.html)
+
+### Q> How do you communicate between two components not in a parent-child relationship?
+
+SOLN : when two components arent connected with parent child relation then we opt for LMS .
+LMS is built on top of PUB/SUB patten . Its like a radio station .
+
+- one component broadcasts a message on a specific frequency (a message channel)
+- Any other component turned into that same frequency can hear the message and react to it , regardless of where it sits on the page.
+- _Cross Framework Capabilities_ : LMS doesnt just connect LWC to LWC , it can bridge communication between LWC, Aura and VF Components on same page .
+- _Scope_ : LMS allows to define the scope of the message ( APPLICATION scope ) , meaning that you can choose whether a component recieves messages only when it is active on the screen or event when its hiddene i background console lab .
+- It consisits of a Metadata file (Message Channel) , Publisher component (Sender) and Subscriber Component (Reciever )
+  CODE Sample :
+  [message channel demo](./lwc%20code%20samples/lms%20demo/RecordSelectChannel.messageChannel-meta.xml)
+  [Publisher Component](./lwc%20code%20samples/lms%20demo/PublisherCmp)
+  [Subscriber Component](./lwc%20code%20samples/lms%20demo/SubscriberCmp.js)
