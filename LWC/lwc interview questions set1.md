@@ -170,3 +170,10 @@ LMS is built on top of PUB/SUB patten . Its like a radio station .
   [message channel demo](./lwc%20code%20samples/lms%20demo/RecordSelectChannel.messageChannel-meta.xml)
   [Publisher Component](./lwc%20code%20samples/lms%20demo/PublisherCmp.js)
   [Subscriber Component](./lwc%20code%20samples/lms%20demo/SubscriberCmp.js)
+
+### Q> How to implement sortable columns in LWC `lightning-datatable`?
+
+SOLN : use sortable = true for the columns the code sample is given below ✨
+
+[Sortable Datatable HTML](./lwc%20code%20samples/datatable/sortableDatatable.html)
+[Sortabel Datable JS](./lwc%20code%20samples/datatable/sortableDatatable.js)

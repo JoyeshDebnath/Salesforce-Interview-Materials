@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Sortable Datatable" icon-name="standard:account">
+        <lightning-datatable
+            key-field="Id"
+            data={data}
+            columns={columns}
+            sorted-by={sortedBy}
+            sort-direction={sortDirection}
+            onsort={handleSort}
+            hide-checkbox-column
+        ></lightning-datatable>
+    </lightning-card>
+</template>
