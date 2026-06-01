@@ -1,20 +1,23 @@
-## SCENERIO QUESTIONS FROM @Future | Batch | Scheduled APEX | Queueable Apex :
+# Async APEX Coding Scenerios
 
-- We want to automatically generate a monthly opportunity summary report and send to Sales manager on the first of every month . How would you implement this using Apex .
+### Q1> Automatically Delete Stale Leads Records (Leads that has not been opened for 180 days or more ) on a nightly basis .[Clean UP Process Scsnerios].
 
-- after a user submits a form We need to do heavy calculations and update the related Records in the background . How to achieve this ?
+SOLN : [Batch class](../CODE%20SOLN/Stale%20Record%20Cleanup/AutomatedLeadsCleanupBatch.cls) --
+[Schuler class](../CODE%20SOLN/Stale%20Record%20Cleanup/AutomatedLeadsCleanupScheduler.cls)
 
-- We are calling a 3rd party API when a user clicks a button . This must happen asynchronously . What Apex will you use .
+### Q2> Once the Account processing is done Related Contacts must be processed .
 
-- What would you do if some records fails in Async batch or queueable jobs ? how would you retry them ?
+_SOLN_:
+Anonymous Apex to invoke the Queueable class  
+ **List<Id> accntsToClean=new List<Id>{'23444deefwefwe','qefef122244'};
+System.enqueueJob(new Step1_AccountProcessor(accntsToClean));**
 
-- We want to clean up Sales records automatically How would you implement this
-- "There is a scenario we want to process Accounts records in step 1 and then Related Contacts records in step2 - all asynchronously . How would you handle this in Apex ".
+[Code 1 👩‍💻](../CODE%20SOLN/Related%20records%20chain/AccountProcessor.cls)
+[Code 2 ✨](../CODE%20SOLN/Related%20records%20chain/Step2_ContactProcessor.cls)
 
-- We used Future methods earlier . When and why should we migrate to Quauable Apex .
+### Q3> Implement a system Where a Daily Scheduler wakes up at midnight , quries all outdated Case Records and closes them .
 
-- How would you handle Governor limits when processing large number of records inside Scheduled Apex job ?
+SOLN :
 
-- Our callouts from Future method sometimes fails due to timeout issue or endpoint issue . How to make this retry-able .
-
-- Can we schedule a job from a FLow or lightning component . ? For example a user selects a date/time and JOB should run then ?
+[Batch Processor class ](../CODE%20SOLN/Batch%20Apex%20Scenrio/CaseProcessorBatch.cls) |
+[Schduler class](../CODE%20SOLN/Batch%20Apex%20Scenrio/CaseProcessorScheduler.cls)

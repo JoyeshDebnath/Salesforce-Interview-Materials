@@ -1,6 +1,6 @@
-# Questions FROM Async APEX (Also covers Scenerios based questions )
+# Questions FROM Async APEX (Also covers Scenerios based questions )✨✨
 
-### Q>We want to automatically generate a monthly opportunity summary report and send to Sales manager on the first of every month . How would you implement this using Apex .
+### Q1>We want to automatically generate a monthly opportunity summary report and send to Sales manager on the first of every month . How would you implement this using Apex .
 
 SOLN :
 
@@ -13,13 +13,13 @@ SOLN :
   [Batch class ](../codes%20soln/OppSummarySchedulable/MonthlyOppSummaryBatch.cls)
   [Scheduler ](../codes%20soln/OppSummarySchedulable/executionscript.cls)
 
-### Q>After a user submits a form We need to do heavy calculations and update the related Records in the background . How to achieve this ?
+### Q2>After a user submits a form We need to do heavy calculations and update the related Records in the background . How to achieve this ?
 
 SOLN : [Code Sample using Quauable ](../codes%20soln/RelatedRecordsCalculation/AsyncOpportunityCalculator.cls)
 
-### We are calling a 3rd party API when a user clicks a button . This must happen asynchronously . What Apex will you use .
+### Q3>We are calling a 3rd party API when a user clicks a button . This must happen asynchronously . What Apex will you use .
 
-### What would you do if some records fails in Async batch or queueable jobs ? how would you retry them ?
+### Q4>What would you do if some records fails in Async batch or queueable jobs ? how would you retry them ?
 
 _SOLN_ : For handling the erorrs there are two kinds of errors that might comeup : 1> erros that can be handled during execution and 2> unhandled errors like limitexceptions etc .
 
@@ -30,14 +30,32 @@ _SOLN_ : For handling the erorrs there are two kinds of errors that might comeup
 CODE : 👉
 [Batch APEX Retry DEMO✨](../codes%20soln/RetryFailedRecords/RetryBatchClass.cls);
 
-### We want to clean up Sales records automatically How would you implement this
+### Q5>We want to clean up Sales records automatically How would you implement this
 
-### "There is a scenario we want to process Accounts records in step 1 and then Related Contacts records in step2 - all asynchronously . How would you handle this in Apex ".
+### Q6>"There is a scenario we want to process Accounts records in step 1 and then Related Contacts records in step2 - all asynchronously . How would you handle this in Apex ".
 
-### We used Future methods earlier . When and why should we migrate to Quauable Apex .
+SOLN :
 
-### How would you handle Governor limits when processing large number of records inside Scheduled Apex job ?
+- **Why not @future Method :** Because future cannot chain . If you try to call a second future method from another @future method Salesforce throws a fatal error .
 
-### Our callouts from Future method sometimes fails due to timeout issue or endpoint issue . How to make this retry-able .
+- **Queueable Chaining :** We can chain another Queueable Apex from execute method of a Queueable Apex using **System.enqueueJob()** inside the _execute()_ method of a queueable apex(this gives a fresh set of governor limits to the second call). Best suited for medium volume records .
 
-### Can we schedule a job from a FLow or lightning component . ? For example a user selects a date/time and JOB should run then ?
+- **Batch Apex chaining** (Best when we are dealing with large volumes of records >50,000): chain Batch apex calls in _finish()_ method using **Database.executeBatch()**.
+
+### Q7>We used Future methods earlier . When and why should we migrate to Quauable Apex .
+
+### Q8>How would you handle Governor limits when processing large number of records inside Scheduled Apex job ?
+
+**SOLN**:
+
+- Scheddulable Apex runs within standard synchronous transaction limits , meaning you will instantly hit hard limis like 50k Queried rows limit , 10K DML rows limit or 10 seconds CPU timout limits .
+
+- To bypass it best appraoch is to move the heavy processing inside Batch class or Quauable and call that from Scheduled Apex .
+
+- Advantage of using Batch:
+  - **Fresh limits per chunk** : the entire large dataset broken into maangebale chunks of lets say 200 records . Each chunk runs in its own seperate Asyncronous transactional context. This means we get 100 SOQL queries limit and 10K DML limits per chunk .
+  - **Massive scaling via Database.QueryLocator**: In batch apex start method when we use _Database.getQueryLocator()_ We can easily bypass 50K queried rows limit and can query upto 50 million queried rows out from database.
+
+### Q9>Our callouts from Future method sometimes fails due to timeout issue or endpoint issue . How to make this retry-able .
+
+### Q10>Can we schedule a job from a FLow or lightning component . ? For example a user selects a date/time and JOB should run then ?
