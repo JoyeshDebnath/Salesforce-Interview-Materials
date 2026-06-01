@@ -8,8 +8,8 @@ SOLN : [Batch class](../CODE%20SOLN/Stale%20Record%20Cleanup/AutomatedLeadsClean
 ### Q2> Once the Account processing is done Related Contacts must be processed .
 
 _SOLN_:
-Anonymous Apex to invoke the Queueable class  
- **List<Id> accntsToClean=new List<Id>{'23444deefwefwe','qefef122244'};
+Anonymous Apex to invoke the Queueable class nn
+**List<Id> accntsToClean=new List<Id>{'23444deefwefwe','qefef122244'};
 System.enqueueJob(new Step1_AccountProcessor(accntsToClean));**
 
 [Code 1 👩‍💻](../CODE%20SOLN/Related%20records%20chain/AccountProcessor.cls)
@@ -17,7 +17,11 @@ System.enqueueJob(new Step1_AccountProcessor(accntsToClean));**
 
 ### Q3> Implement a system Where a Daily Scheduler wakes up at midnight , quries all outdated Case Records and closes them .
 
-SOLN :
+**SOLN :**
 
 [Batch Processor class ](../CODE%20SOLN/Batch%20Apex%20Scenrio/CaseProcessorBatch.cls) |
 [Schduler class](../CODE%20SOLN/Batch%20Apex%20Scenrio/CaseProcessorScheduler.cls)
+
+### Q4>Our callouts from Future method sometimes fails due to timeout issue or endpoint issue . How to make this retry-able .
+
+**SOLN :**
