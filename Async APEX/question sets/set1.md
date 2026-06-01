@@ -6,7 +6,7 @@ SOLN :
 
 - Schedulable Apex : Used to invoke execuation at a specific time using CRON expression. However it runs syncronously within its excuation context , meaning it is tightly bound by standard ransaction limits .
 - Batch Apex : By offloading the calculation from schedulable apex to batch job, we can process up to 50 million records efficientl in seperate , smaller chunks .
-- Database.Stateful : by default batch apex is stateless - each chunk executes in a brand new transaction context. To accumulate summary data (like revenue and record counts ) acrosss all chunks , our batch class must implement _Database.Stateful_ to preserve the instance variabl states between execuation .
+- Database.Stateful : by default batch apex is stateless - each chunk executes in a brand new transaction context. To accumulate summary data (like revenue and record counts ) acrosss all chunks , our batch class must implement _Database.Stateful_ to preserve the instance variable states between execuation .
 
   CODE :->
   [Scehuleable class ](../codes%20soln/OppSummarySchedulable/MonthlyOpportunitySummaryScheduler.cls)
@@ -20,6 +20,15 @@ SOLN : [Code Sample using Quauable ](../codes%20soln/RelatedRecordsCalculation/A
 ### We are calling a 3rd party API when a user clicks a button . This must happen asynchronously . What Apex will you use .
 
 ### What would you do if some records fails in Async batch or queueable jobs ? how would you retry them ?
+
+_SOLN_ : For handling the erorrs there are two kinds of errors that might comeup : 1> erros that can be handled during execution and 2> unhandled errors like limitexceptions etc .
+
+- **For handled Errors** : Use _Database.insert(scope,false)_ for partial commit to DB and _Database.SaveResult_ to capture the records with exception in that chunk in batch apex .
+
+- **For Unhandled Errors** : Implement the **Database.RaisesPlatformEvents** which fires a standard platform event called **BatchApexErrorEvent** which you can catch and write a trigger on it .
+
+CODE : 👉
+[Batch APEX Retry DEMO✨](../codes%20soln/RetryFailedRecords/RetryBatchClass.cls);
 
 ### We want to clean up Sales records automatically How would you implement this
 
