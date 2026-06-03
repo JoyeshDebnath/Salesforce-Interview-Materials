@@ -194,5 +194,15 @@ SOLN : Before LMS =the communication between different components that doesnt ha
   - traditional way was to call apex every 5 seconds to see any data change . The problem was first it makes the client side very slow in performance , and secondly floods the server logs, also it _Repaidly consumes Concurrent Apex transaction limits_
     .
 
-- Salesforce uses a PUBSUB model based on Streaming API , where the server streams messages only when change occurs to the client , the client maintains a long lived HTTP connection(basd on COMETD protocol) and listens to the changes .
+- Salesforce uses a PUBSUB model based on _Streaming API_ , where the server streams messages only when change occurs to the client , the client maintains a long lived HTTP connection(basd on COMETD protocol) and listens to the changes .
   **[Code Sample](./lwc%20code%20samples/Real%20Time%20Polling%20Codes/realTimeMonitor.js)**
+
+### Q12> What are the limitations of Lightning Datat Service (LDS)?
+
+- **Single Record Support**: LDS works on single record only so in situations where we want to handle or process multiple records together we cant use LDS . It doesnt work for bulk scsnerios .
+- **Lacks SOQL Flexibility**: LDS doesnt have query engiene . SO in situation where we want to process dynamic record based on conditons , or parent child filters etc we cant do that cause we cannot run WHERE , ORDER BY etc .
+- **LDS runs strictly on USERMODE**: LDS implements current users Object level security , FLS or Sharing rules . So if the users doesnt have access to onjects fields etc user cannnot work with the record . In requirements where organisation want s to bypass Usermode and implement system mode , LDS is a bad choice . We have to impelemet Apex **without sharing**
+- **Ussupported Objects**:LDS is buld on top of UI API . So it supports the objects which UI api supports . Mostly standard and custom objects are supported but it lacks supports for some setup objects , metadata , and some standard objects as well .
+- **Client side Cache**: LDS implements client side cache for performance optimisation . Consider a situation where a asyncronous job like batch apex or Quauable , Scheuled job updates a record , it would not know until we programatically Refersh the data useing
+  - **refreshApex()**
+  - **notifyRecordUpdateAvailable(RecordIds)**
