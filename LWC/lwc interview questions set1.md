@@ -126,7 +126,7 @@ export default class ImperativeCallsExample extends LightningElement {
 }
 ```
 
-### Q> Explain LWC lifecycle hooks and when to use `renderedCallback()` vs `connectedCallback()`.
+### Q5> Explain LWC lifecycle hooks and when to use `renderedCallback()` vs `connectedCallback()`.
 
 SOLN : A lifecycle hook is simply a frmework defined methods that automatically fires at specific phases of a components existance .
 
@@ -144,19 +144,19 @@ IS DOM accessible ? | No , The HTML elemnts are not yet painted on the screen . 
 Can you access @api properties | Yes public properties passed from Parent are fully accessible in connectedcallback | Yes accessible in renderdcallback
 Primary USE CASES : | Fetching data from APex , subscribing to lms, setting up default values to variables | Initlising 3rd party js libraries like Chart.js , manipulating DOM elemnts directly
 
-### Q> What if I update the Recative properties @track variables in renderdCallback hook ?
+### Q6> What if I update the Recative properties @track variables in renderdCallback hook ?
 
 SOLN : It will crash the browser or cause infinite loops . Updating a reactive property triggers component Re-rendering . because the component is re-renderd so it will triggered renderedCallback hook , this updates the property again the the cycle goes on crashing the browser .
 
 **FIX**
 : use a boolean Flag ( eg : isRendered = False ) to ensure that the code inside only runs once .
 
-### Q> How would you show/hide a form section based on a picklist field value in LWC?
+### Q7> How would you show/hide a form section based on a picklist field value in LWC?
 
 SOLN :[JS code ](./lwc%20code%20samples/scenerio-show%20form%20section%20based%20on%20picklist/picklistselection.js)
 [template code ](./lwc%20code%20samples/scenerio-show%20form%20section%20based%20on%20picklist/picklistselection.html)
 
-### Q> How do you communicate between two components not in a parent-child relationship?
+### Q8> How do you communicate between two components not in a parent-child relationship?
 
 SOLN : when two components arent connected with parent child relation then we opt for LMS .
 LMS is built on top of PUB/SUB patten . Its like a radio station .
@@ -171,9 +171,28 @@ LMS is built on top of PUB/SUB patten . Its like a radio station .
   [Publisher Component](./lwc%20code%20samples/lms%20demo/PublisherCmp.js)
   [Subscriber Component](./lwc%20code%20samples/lms%20demo/SubscriberCmp.js)
 
-### Q> How to implement sortable columns in LWC `lightning-datatable`?
+### Q9> How to implement sortable columns in LWC `lightning-datatable`?
 
 SOLN : use sortable = true for the columns the code sample is given below ✨
 
 [Sortable Datatable HTML](./lwc%20code%20samples/datatable/sortableDatatable.html)
 [Sortabel Datable JS](./lwc%20code%20samples/datatable/sortableDatatable.js)
+
+### Q10> How does Lightning messaging service works ?
+
+SOLN : Before LMS =the communication between different components that doesnt have parent-child relationship used to happen by :
+
+- Standard DOM events (CustomEvent) only travel upwards thrugh strict parent-chld component hiererchy .
+- Custom PUBSUB javascript utilities worked within lwc , but couldnt cross framework border .
+  LMS is based on pubsub model , where decoupled components communicate through event bus . one component passes payload in eventbus and another component listens and consumes the payload .
+  Underneath it uses metadata file called a **Lightning Message Channel(.messageChannel-meta.xml)** .
+
+  ### Q11> How do you handle real time updates in LWC without polling ?
+
+  SOLN :
+  - Short ansswer is using **lightning/empAPi**(stands for Enterprise Messaging Platform API)
+  - traditional way was to call apex every 5 seconds to see any data change . The problem was first it makes the client side very slow in performance , and secondly floods the server logs, also it _Repaidly consumes Concurrent Apex transaction limits_
+    .
+
+- Salesforce uses a PUBSUB model based on Streaming API , where the server streams messages only when change occurs to the client , the client maintains a long lived HTTP connection(basd on COMETD protocol) and listens to the changes .
+  **[Code Sample](./lwc%20code%20samples/Real%20Time%20Polling%20Codes/realTimeMonitor.js)**

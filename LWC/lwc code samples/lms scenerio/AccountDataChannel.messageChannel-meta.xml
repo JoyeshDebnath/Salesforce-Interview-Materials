@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>AccountDataChannel</masterLabel>
+    <description>Broadcasts selected Account context to the dashboard page .</description>
+    <isExposed>true</isExposed>
+
+    <LightningMessageFields>
+        <fieldName>recordId</fieldName>
+        <description>The Salesforce ID of the selected Account Record</description>
+    </LightningMessageFields>
+    <LightningMessageFields>
+        <fieldName>recordStatus</fieldName>
+        <description>The status of the Account</description>
+    </LightningMessageFields>
+
+</LightningMessageChannel>
