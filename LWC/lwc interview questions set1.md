@@ -206,3 +206,18 @@ SOLN : Before LMS =the communication between different components that doesnt ha
 - **Client side Cache**: LDS implements client side cache for performance optimisation . Consider a situation where a asyncronous job like batch apex or Quauable , Scheuled job updates a record , it would not know until we programatically Refersh the data useing
   - **refreshApex()**
   - **notifyRecordUpdateAvailable(RecordIds)**
+
+### Q13> Explain about @api , @track , @wire decorators ..
+
+SOLN :
+
+- **@api decorator:** @api decorator exposes fields or methods publicly , making the properties public so that a parent can programatically read , set or trigger .
+- **@track properties**: @track forces LWC's engine to deeply observe mutations within arrays and nested Objects .
+- **@wire:** @wire service is a core mechanism of LDS .It minimises unnecessary server calls , enforces Client side caching , and keeps data uniform on all components in a single screen .
+
+#### Code Demo
+
+[Wire](./lwc%20code%20samples/api%20track%20wire%20sample/wireDemo.js)
+[track](./lwc%20code%20samples/api%20track%20wire%20sample/trackDemo.js)
+[api Parent Code](./lwc%20code%20samples/api%20track%20wire%20sample/parentComponent.html)
+[api child code](./lwc%20code%20samples/api%20track%20wire%20sample/childComponent.js)
