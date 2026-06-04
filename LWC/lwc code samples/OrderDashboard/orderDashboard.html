@@ -1,0 +1,20 @@
+<template>
+    <lightning-card title="Live Order Board ✨">
+        <p slot="footer">
+            Status : {connectionStatus}
+        </p>
+
+        <template if:true={orders.length}>
+            <template for:each={orders} for:item="order">
+                <div key={order.id}>
+                    <span>{order.orderNumber}</span>
+                    <span class="badge">{order.status}</span>
+                </div>
+            </template>
+        </template>
+
+        <template if:false={orders.length}>
+            <p>Waiting for Shipment Events ....</p>
+        </template>
+    </lightning-card>
+</template>
