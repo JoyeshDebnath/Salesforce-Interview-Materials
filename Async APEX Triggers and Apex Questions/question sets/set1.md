@@ -128,3 +128,81 @@ public class FullSchedulableExample implements Schedulable{
     }
 }
 ```
+
+### Q14> A trigger is Hitting CPU timeout limit when updating 10,000 records from Data Loader . How to redesign it .
+
+SOLN :
+
+1. **Identify the Ani-Patterns and Eliminate**
+   - Nested Loops O(N^2) Complexity .Ensure that code is not iterating over a list of child records inside a loop of parent records . Use Map <Id,List<Child\_\_c>> to Lookup O(1)
+   - Redundant and unnecessary Queries and DML operations : Ensure no SOQL or DML statements written inside the loop . Remove unnecssary DML statements in Before Triggers since they save automatically in Before Triggers .
+2. **Implement Trigger Famework & Lazy loading**:
+   - If multiple triggers runs on same objects , combine them under one trigger Framework (Handler Pattern)
+   - Implement Bypass mechanism / logic (Using a custom settings OR custom permission ) to deactivate the trigger temporarily if already data preprocessed .
+
+3. **Offload heavy logics and calculations to Async Apex**
+   - Move complex calculatons and computational logics to Async Apex like Batchh / Quauable . pass ids and process there . Async apex runs in their seperate transaction with own set of Governor limits . CPU limit is 60000 ms which is 6 times . 😶
+
+### Q15 > You need to stop recursion in an after update trigger where the records updates themselves . How will you handle it ?
+
+SOLN :
+
+1. **APPROACH 1 : Use static SET < Id > Pattern**
+   - Instead of using a simple static Global Boolean flag variable which breaks during a Data loader batches over 200 records , you maintain a **Public Static Set< Id >** inside a handler or Utility class
+   - When the trigger executes , check if the Record ID exists in the **processedId Set** .
+   - If it is in the set skip , else execute bsuiness Logic , add the record ID in the set , and prepare it for the update DML .
+
+2. **APPROACH 2 : Explicit OLD vs NEW Field Value Comparison**
+   - Compare the **Trigger.newMap.get(Rec.Id).Your_Field\_\_c** against **Trigger.oldMap.get(Rec.Id).Your_Field\_\_c**
+   - If the Value are different then only perform the business logics and DML .
+
+### Q16> A Batch Job Fails intermittently with "Too many SOQL queries". How would you debug and Fix it !
+
+SOLN :
+
+### Q.16> You need to make tyhe callouts from a trigger . How to do that .
+
+SOLN :
+
+- To make Callouts from a trigger I would generally move the callout logic to a Future method(**(callout=true)**) or a Queuable Apex (**implement Database.AllowsCallouts**).
+- Triggers runs syncronously on Database transaction , so making a callout will throw **"System.CalloutException"**
+- I prefer Quauabele Apex more because it can handle Complex datatypes while Future can only accept primitve datatypes. (Collect the record ID s and pass to Quauable or Future [Bulkification of Coede])
+
+[Example Code](../codes%20soln/callout%20demo%20from%20trigger/)
+
+### Q17> Multiple Triggers runs on the same Object and order is breaking . How to handle this scenerio?
+
+- Salesforce doesn not guarntee the order of execution of triggers if multiple triggers run on same Object .
+- We need to define and design a trigger handler framework - Where we have seperate handler / Helper class where the core business logic and complex calculations are written and triggers only routes to those . One trigger per object
+- **Benifits:**: - We have a total control of which logic to implement first after what . The Validation logic can be implemented before the Auto populate logic . - We can have better Recursion control and Bypass mechanism in case of any bulk data migration .
+  [Code Demo](../codes%20soln/Trigger%20framework%201/)
+
+### Q18> Future method is hittingh limits during peak loads . What cn be the workaround to solve the ,issue ?
+
+- @Future method is hitting Governor limits during peak hours like 50 callouts limits per transaction . The good soln is to transfer the logc to Quauaable Apex . Why ?
+- Queueable supports complex datatypes to be passed in params , Future doesnt allows chaining , no tracking of Job ids to know their status is possible .
+- Queueable Chaining is a big win cause we are not processing and dumping everything paralelly , instead processing and chaining next once the current batch finishes .
+- Queueable Delay : you can pass an optional delay parameter to delay the execuation to handle sudden traffic spikes .
+- **Fianlizer Interface**: Quauable supports Finalizer interface to handle sudden exceptions , log errors and safely retry if the action fails .
+- **We can also implement logic using Platform Events**:instead we can fire platform events , event Bus has capacity to hold event for 72 hours , we can seperately handle the logic asyncronously .
+  [CODE DEMO](../codes%20soln/Peak%20Traffic%20Call%20Demo/)
+
+### Q19> You need partial success in Bulk Updates . How to implement this ?
+
+SOLN:
+
+- Instead of using standard DML commands like -> (insert,update,delete) which rolls back entire transaction if one of the records is faulty , we use Database class .
+- Database.update , Database.isnert etc have an optional parameter (allORNone=True OR False) . This allows partial success even if some records are faulty .
+- Database class have SaveResult[] array which gives us ids of the faulty record as well .
+  [code demo](../codes%20soln/Database%20class%20demo/partialUpdate.cls)
+
+### Q20 > You need to run a trigger o specific Profiles only . How To implement this .
+
+SOLN:
+
+- **What To Avoid?**- Hardcoding of Ids ,and names and using profile IDs and names in Trigger cause the IDs changes across Environments and names can be altered .
+- Never use **UserInfo.getProfileId()**
+- **Use Custom Permission**: and assign that Custom permission to speicifc Profiles and permission sets . Access the Custom Permission using **FeatureManagement.checkPermission() method** .
+  [CODE](../codes%20soln/Permission%20Based%20Trigger/AccountTriggerHandler.cls)
+
+### Q21> In Apex whats With Sharing and Without Sharing ?
