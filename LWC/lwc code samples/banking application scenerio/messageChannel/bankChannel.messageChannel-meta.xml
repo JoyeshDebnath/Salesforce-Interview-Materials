@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="https://soap.sforce.com/2006/metadata">
+    <masterLabel>BankChannel</masterLabel>
+    <isExposed>true</isExposed>
+    <description>Banking message channel</description>
+
+    <LightningMessageFields>
+        <fieldName>accountId</fieldName>
+    </LightningMessageFields>
+    <LightningMessageFields>
+        <fieldName>accountNumber</fieldName>
+    </LightningMessageFields>
+</LightningMessageChannel>

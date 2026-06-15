@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Account List Component - Account Selector " icon-name="standard:account">
+        <div class="slds-var-m-around_medium">
+            <lightning-combobox
+                name="accountDropdown"
+                label="Select Bank Account"
+                value={value}
+                options={options}
+                onchange={handleAccountChange}
+            ></lightning-combobox>
+        </div>
+    </lightning-card>
+</template>

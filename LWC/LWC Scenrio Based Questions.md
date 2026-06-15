@@ -15,3 +15,8 @@
 
 SOLN : use concept of subscribing to real time using **"lightning/empApi"**
 [CODE SOLN](./lwc%20code%20samples/OrderDashboard/)
+
+### Q3> Interviewer: "We are building a banking application home page. In the left sidebar, we have an AccountList component that displays a dropdown of a customer's bank accounts. In the right sidebar, completely independent of the left sidebar, we have an AccountBalances component.Write the code so that when a user selects a bank account from the dropdown in the left component, the right component immediately displays that account's specific balance and account number. You cannot wrap these in a single parent component."
+
+SOLN :
+[CODE](./lwc%20code%20samples/banking%20application%20scenerio/)

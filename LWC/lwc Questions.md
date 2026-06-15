@@ -221,3 +221,25 @@ SOLN :
 [track](./lwc%20code%20samples/api%20track%20wire%20sample/trackDemo.js)
 [api Parent Code](./lwc%20code%20samples/api%20track%20wire%20sample/parentComponent.html)
 [api child code](./lwc%20code%20samples/api%20track%20wire%20sample/childComponent.js)
+
+### Q14>You created an LWC component but data is not rendering after deployment in production . It works in sandbox . How will you debug it .
+
+SOLN :
+
+- check browser console errors
+- Check for CSP (Content Security Policy ) issues
+- Check for access issues in APEX class/methods (FLS | CRUD , Sharing )
+- validate named credentials and endpoints
+- cross check org differences ( Custom metadata / Custom settings )
+- use try-catch in Apex and handle the erros in UI .
+
+### Q15> You need component communication between unrelated components in LWC . How to implement .
+
+SOLN :
+
+- We have Pub/sub based Messaging channel concept - Lightning Messaging service (LMS)
+- create a folder named **messageChannels** and create a xml file like **SampleChannel.messageChannel-meta.xml**
+- publisher component publishes
+- subscriber component subscribes to the messagchannel
+
+###
